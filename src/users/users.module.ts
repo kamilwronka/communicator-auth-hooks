@@ -1,19 +1,26 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { configService } from 'src/config/config.service';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
+const {
+  host: rabbitMQHost,
+  port: rabbitMQPort,
+  user: rabbitMQUser,
+  password: rabbitMQPassword,
+} = configService.getRabbitMQConfig();
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
     ClientsModule.register([
       {
         name: 'USERS_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://guest:guest@rabbitmq:5672/'],
+          urls: [
+            `amqp://${rabbitMQUser}:${rabbitMQPassword}@${rabbitMQHost}:${rabbitMQPort}/`,
+          ],
           queue: 'users_service_queue',
           queueOptions: {
             durable: false,

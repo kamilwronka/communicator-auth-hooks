@@ -1,6 +1,6 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
@@ -11,7 +11,7 @@ class ConfigService {
       throw new Error(`config error - missing env.${key}`);
     }
 
-    return value;
+    return value.trim();
   }
 
   public ensureValues(keys: string[]) {
@@ -28,33 +28,22 @@ class ConfigService {
     return env !== 'DEV';
   }
 
-  public getTypeOrmConfig(): TypeOrmModuleOptions {
+  public getRabbitMQConfig() {
     return {
-      type: 'postgres',
-      host: this.getValue('POSTGRES_HOST'),
-      port: parseInt(this.getValue('POSTGRES_PORT')),
-      username: this.getValue('POSTGRES_USER'),
-      password: this.getValue('POSTGRES_PASSWORD'),
-      database: this.getValue('POSTGRES_DATABASE'),
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      migrationsTableName: 'migration',
-      migrations: ['src/migration/*.ts'],
-      cli: {
-        migrationsDir: 'src/migration',
-      },
-      ssl: this.isProduction(),
-      synchronize: true,
+      host: this.getValue('RABBITMQ_HOST'),
+      port: this.getValue('RABBITMQ_PORT'),
+      user: this.getValue('RABBITMQ_USER'),
+      password: this.getValue('RABBITMQ_PASSWORD'),
     };
   }
 }
 
 const configService = new ConfigService(process.env).ensureValues([
-  'POSTGRES_HOST',
-  'POSTGRES_PORT',
-  'POSTGRES_USER',
-  'POSTGRES_PASSWORD',
-  'POSTGRES_DATABASE',
   'PORT',
+  'RABBITMQ_USER',
+  'RABBITMQ_PASSWORD',
+  'RABBITMQ_HOST',
+  'RABBITMQ_PORT',
 ]);
 
 export { configService };

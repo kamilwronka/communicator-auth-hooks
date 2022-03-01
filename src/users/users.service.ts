@@ -3,10 +3,7 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
-import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ClientProxy, RmqRecordBuilder } from '@nestjs/microservices';
 import { map, Observable } from 'rxjs';
@@ -19,12 +16,11 @@ type UserServiceResponse = {
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private repo: Repository<User>,
-    @Inject('USERS_SERVICE') private client: ClientProxy,
-  ) {}
+  constructor(@Inject('USERS_SERVICE') private client: ClientProxy) {}
 
   create(createUserData: CreateUserDto): Observable<UserServiceResponse> {
+    console.log(createUserData);
+
     const message = createUserData;
     const record = new RmqRecordBuilder(message)
       .setOptions({

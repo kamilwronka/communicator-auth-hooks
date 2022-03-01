@@ -13,7 +13,7 @@ async function bootstrap() {
   Logger.log(`Port: ${port}`);
   Logger.log(`Is production: ${isProduction}`);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: false }));
   await app.listen(port);
 }
 bootstrap();
