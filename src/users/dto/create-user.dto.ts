@@ -1,11 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsISO8601,
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
 class Auth0UserData {
   @IsNotEmpty()
@@ -15,11 +9,6 @@ class Auth0UserData {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @IsISO8601()
-  @IsNotEmpty()
-  @IsString()
-  created_at: string;
 }
 
 export class CreateUserDto {
