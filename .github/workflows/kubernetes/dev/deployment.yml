@@ -30,20 +30,20 @@ spec:
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
-                  name: comminicator-auth-hooks-service-secrets
+                  name: communicator-auth-hooks-service-secrets
                   key: RABBITMQ_USER
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: comminicator-auth-hooks-service-secrets
+                  name: communicator-auth-hooks-service-secrets
                   key: RABBITMQ_PASSWORD
             - name: RABBITMQ_HOST
               valueFrom:
                 secretKeyRef:
-                  name: comminicator-auth-hooks-service-secrets
+                  name: communicator-auth-hooks-service-secrets
                   key: RABBITMQ_HOST
             - name: RABBITMQ_PORT
               valueFrom:
                 secretKeyRef:
-                  name: comminicator-auth-hooks-service-secrets
+                  name: communicator-auth-hooks-service-secrets
                   key: RABBITMQ_PORT
