@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: communicator-auth-hooks-service
-  namespace: communicator-dev
+  namespace: communicator-prod
 spec:
   selector:
     matchLabels:
@@ -26,7 +26,7 @@ spec:
             - name: PORT
               value: '4000'
             - name: ENV
-              value: dev
+              value: prod
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:

@@ -1,0 +1,74 @@
+{
+  "app": "communicator",
+  "name": "auth-hooks-service",
+  "containerPort": "4000",
+  "environments": [
+    {
+      "name": "dev",
+      "branch": "develop"
+    },
+    {
+      "name": "prod",
+      "branch": "master"
+    }
+  ],
+  "plugins": ["api-key"],
+  "resources": {
+    "dev": {
+      "limits": {
+        "memory": "256Mi",
+        "cpu": "500m"
+      }
+    },
+    "prod": {
+      "limits": {
+        "memory": "256Mi",
+        "cpu": "500m"
+      }
+    }
+  },
+  "env": {
+    "dev": {
+      "PORT": {
+        "value": "4000"
+      },
+      "ENV": {
+        "value": "dev"
+      },
+      "RABBITMQ_USER": {
+        "source": "secrets"
+      },
+      "RABBITMQ_PASSWORD": {
+        "source": "secrets"
+      },
+      "RABBITMQ_HOST": {
+        "source": "secrets"
+      },
+      "RABBITMQ_PORT": {
+        "source": "secrets",
+        "key": "RABBITMQ_PORT"
+      }
+    },
+    "prod": {
+      "PORT": {
+        "value": "4000"
+      },
+      "ENV": {
+        "value": "prod"
+      },
+      "RABBITMQ_USER": {
+        "source": "secrets"
+      },
+      "RABBITMQ_PASSWORD": {
+        "source": "secrets"
+      },
+      "RABBITMQ_HOST": {
+        "source": "secrets"
+      },
+      "RABBITMQ_PORT": {
+        "source": "secrets",
+        "key": "RABBITMQ_PORT"
+      }
+    }
+  }
+}
