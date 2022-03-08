@@ -10,14 +10,14 @@ metadata:
 spec:
   tls:
     - hosts:
-        - prod.auth-hooks-service.communicator.kamilwronka.com
+        - prod.api.communicator.kamilwronka.com
       secretName: communicator-prod-tls
   ingressClassName: kong
   rules:
-    - host: prod.auth-hooks-service.communicator.kamilwronka.com
+    - host: prod.api.communicator.kamilwronka.com
       http:
         paths:
-          - path: /
+          - path: /auth-hooks-service
             pathType: ImplementationSpecific
             backend:
               service:
