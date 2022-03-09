@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: communicator-auth-hooks-service
+  namespace: communicator-dev
+  annotations:
+    konghq.com/protocols: https
+    konghq.com/https-redirect-status-code: '308'
+    konghq.com/plugins: communicator-dev-api-key
+    konghq.com/strip-path: 'true'
+spec:
+  tls:
+    - hosts:
+        - dev.api.communicator.kamilwronka.com
+      secretName: communicator-dev-tls
+  ingressClassName: kong
+  rules:
+    - host: dev.api.communicator.kamilwronka.com
+      http:
+        paths:
+          - path: /auth-hooks-service
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: communicator-auth-hooks-service
+                port:
+                  number: 4000

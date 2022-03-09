@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communicator-auth-hooks-service
+  namespace: communicator-dev
+spec:
+  selector:
+    matchLabels:
+      app: communicator-auth-hooks-service
+  template:
+    metadata:
+      labels:
+        app: communicator-auth-hooks-service
+    spec:
+      containers:
+        - name: communicator-auth-hooks-service
+          image: >-
+            rg.pl-waw.scw.cloud/communicator/communicator_auth-hooks-service:latest
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+          ports:
+            - containerPort: 4000
+          env:
+            - name: PORT
+              value: '4000'
+            - name: ENV
+              value: dev
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: communicator-auth-hooks-service-secrets
+                  key: RABBITMQ_USER
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: communicator-auth-hooks-service-secrets
+                  key: RABBITMQ_PASSWORD
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: communicator-auth-hooks-service-secrets
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: communicator-auth-hooks-service-secrets
+                  key: RABBITMQ_PORT

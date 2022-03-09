@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: communicator-auth-hooks-service
+  labels:
+    purpose: dev
+spec:
+  containers:
+  - name: communicator-auth-hooks-service
+    image: communicator-auth-hooks-service
+    ports:
+    - containerPort: 4002
