@@ -1,6 +1,5 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { name } from '../service.json';
 
 import { AppModule } from './app.module';
 import { configService } from './config/config.service';
@@ -14,7 +13,6 @@ async function bootstrap() {
   Logger.log(`Port: ${port}`);
   Logger.log(`Is production: ${isProduction}`);
 
-  app.setGlobalPrefix(name);
   app.useGlobalPipes(new ValidationPipe({ whitelist: false }));
   await app.listen(port);
 }
