@@ -12,12 +12,13 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: cluster-1
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
   GKE_ZONE: europe-central2-a
   DEPLOYMENT_NAME: communicator-auth-hooks-service
   IMAGE: communicator_auth-hooks-service
   REPO_NAME: ${{ secrets.REPO_NAME }}
   ENVIRONMENT: prod
+  NAMESPACE: communicator-prod
 
 jobs:
   setup-build-publish-deploy:
@@ -71,6 +72,6 @@ jobs:
       - name: Deploy
         run: |-
           (cd .github/workflows/base && ./kustomize edit set image $REPO_NAME/$PROJECT_ID/IMAGE:TAG=$REPO_NAME/$PROJECT_ID/$IMAGE:$GITHUB_SHA)
-          ./kustomize build .github/workflows/overlays/$ENVIRONMENT | kubectl apply -f -
-          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          ./kustomize build .github/workflows/overlays/$ENVIRONMENT | kubectl apply -n $NAMESPACE -f -
+          kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE
           kubectl get services -o wide
