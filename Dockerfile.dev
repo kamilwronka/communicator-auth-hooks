@@ -2,10 +2,13 @@ FROM node:latest
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package.json ./
 
 RUN yarn
 
-EXPOSE 4002
+COPY . .
+
+EXPOSE 4000
+ENV GOOGLE_APPLICATION_CREDENTIALS="sa-key.json"
 
 ENTRYPOINT [ "yarn", "start:dev" ]

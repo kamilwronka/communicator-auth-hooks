@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { configService } from 'src/config/config.service';
@@ -13,21 +14,22 @@ const {
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'USERS_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: [
-            `amqp://${rabbitMQUser}:${rabbitMQPassword}@${rabbitMQHost}:${rabbitMQPort}/`,
-          ],
-          queue: 'users_service_queue',
-          queueOptions: {
-            durable: false,
-          },
-        },
-      },
-    ]),
+    HttpModule,
+    // ClientsModule.register([
+    //   {
+    //     name: 'USERS_SERVICE',
+    //     transport: Transport.RMQ,
+    //     options: {
+    //       urls: [
+    //         `amqp://${rabbitMQUser}:${rabbitMQPassword}@${rabbitMQHost}:${rabbitMQPort}/`,
+    //       ],
+    //       queue: 'users_service_queue',
+    //       queueOptions: {
+    //         durable: false,
+    //       },
+    //     },
+    //   },
+    // ]),
   ],
   controllers: [UsersController],
   providers: [UsersService],

@@ -4,7 +4,9 @@ metadata:
   name: communicator-auth-hooks-service
   labels:
     app: communicator-auth-hooks-service
-  namespace: communicator-prod
+    service: communicator-auth-hooks-service
+  annotations:
+    ingress.kubernetes.io/service-upstream: "true"
 spec:
   ports:
     - port: 4000
@@ -13,3 +15,10 @@ spec:
       name: http
   selector:
     app: communicator-auth-hooks-service
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: communicator-auth-hooks-service
+  labels:
+    account: communicator-auth-hooks-service

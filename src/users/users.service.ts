@@ -1,45 +1,26 @@
-import {
-  Inject,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { catchError, map, Observable } from 'rxjs';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { ClientProxy, RmqRecordBuilder } from '@nestjs/microservices';
-import { map, Observable } from 'rxjs';
-import { MessageResponseStatus } from 'src/enum/messageResponseStatus.enum';
-
-type UserServiceResponse = {
-  data: any;
-  status: MessageResponseStatus;
-};
-
+import { AxiosError, AxiosResponse } from 'axios';
 @Injectable()
 export class UsersService {
-  constructor(@Inject('USERS_SERVICE') private client: ClientProxy) {}
+  constructor(private httpService: HttpService) {}
 
-  create(createUserData: CreateUserDto): Observable<UserServiceResponse> {
-    console.log(createUserData);
+  create(createUserData: CreateUserDto): any {
+    console.log('request sent');
 
-    const message = createUserData;
-    const record = new RmqRecordBuilder(message)
-      .setOptions({
-        headers: {
-          ['x-version']: '1.0.0',
-        },
-        priority: 1,
-        contentType: 'application/json',
-      })
-      .build();
+    const response = this.httpService.post(
+      'http://communicator-users-service:4000/users/create/account',
+      createUserData,
+    );
 
-    return this.client.send({ cmd: 'user_create' }, record).pipe(
-      map<UserServiceResponse, UserServiceResponse>((response) => {
-        if (response.status !== MessageResponseStatus.SUCCESS) {
-          throw new UnprocessableEntityException();
-        }
-
-        return response;
+    return response.pipe(
+      catchError((e) => {
+        throw new BadRequestException(e.response.data);
       }),
+      map((res) => res.data),
     );
   }
 }
