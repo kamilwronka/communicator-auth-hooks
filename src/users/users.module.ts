@@ -4,24 +4,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({
-  imports: [
-    HttpModule,
-    // ClientsModule.register([
-    //   {
-    //     name: 'USERS_SERVICE',
-    //     transport: Transport.RMQ,
-    //     options: {
-    //       urls: [
-    //         `amqp://${rabbitMQUser}:${rabbitMQPassword}@${rabbitMQHost}:${rabbitMQPort}/`,
-    //       ],
-    //       queue: 'users_service_queue',
-    //       queueOptions: {
-    //         durable: false,
-    //       },
-    //     },
-    //   },
-    // ]),
-  ],
+  imports: [HttpModule],
   controllers: [UsersController],
   providers: [UsersService],
 })
