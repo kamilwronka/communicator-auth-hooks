@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: communicator-auth-hooks-service
+  name: auth-hooks-service
   labels:
-    app: communicator-auth-hooks-service
-    service: communicator-auth-hooks-service
+    app: auth-hooks-service
+    service: auth-hooks-service
   annotations:
     ingress.kubernetes.io/service-upstream: "true"
 spec:
@@ -14,11 +14,11 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: communicator-auth-hooks-service
+    app: auth-hooks-service
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: communicator-auth-hooks-service
+  name: auth-hooks-service
   labels:
-    account: communicator-auth-hooks-service
+    account: auth-hooks-service

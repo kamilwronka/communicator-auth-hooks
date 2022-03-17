@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: communicator-auth-hooks-service
+  name: auth-hooks-service
 spec:
   selector:
     matchLabels:
-      app: communicator-auth-hooks-service
+      app: auth-hooks-service
   template:
     metadata:
       labels:
-        app: communicator-auth-hooks-service
+        app: auth-hooks-service
     spec:
-      serviceAccountName: communicator-auth-hooks-service
+      serviceAccountName: auth-hooks-service
       containers:
-        - name: communicator-auth-hooks-service
+        - name: auth-hooks-service
           image: communicator
           resources:
             requests:
