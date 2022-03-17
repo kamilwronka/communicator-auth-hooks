@@ -27,23 +27,11 @@ class ConfigService {
     const env = this.getValue('ENV', false);
     return env !== 'DEV';
   }
-
-  public getRabbitMQConfig() {
-    return {
-      host: this.getValue('RABBITMQ_HOST'),
-      port: this.getValue('RABBITMQ_PORT'),
-      user: this.getValue('RABBITMQ_USER'),
-      password: this.getValue('RABBITMQ_PASSWORD'),
-    };
-  }
 }
 
 const configService = new ConfigService(process.env).ensureValues([
   'PORT',
-  'RABBITMQ_USER',
-  'RABBITMQ_PASSWORD',
-  'RABBITMQ_HOST',
-  'RABBITMQ_PORT',
+  'ENV',
 ]);
 
 export { configService };
