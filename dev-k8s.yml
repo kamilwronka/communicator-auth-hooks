@@ -61,7 +61,7 @@ metadata:
   name: communicator-auth-hooks-service
   namespace: communicator-dev
   annotations:
-    konghq.com/plugins: communicator-dev-cors, communicator-dev-api-key
+    konghq.com/plugins: communicator-dev-cors, key-auth
     konghq.com/strip-path: "true"
     konghq.com/preserve-host: "false"
 spec:
