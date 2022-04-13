@@ -1,6 +1,6 @@
 {
   "app": "communicator",
-  "name": "auth-hooks-service",
+  "name": "auth-hooks",
   "containerPort": "4000",
   "environments": [
     {

@@ -1,14 +1,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: auth-hooks-service
+  name: auth-hooks
 spec:
   hosts:
-    - auth-hooks-service
+    - auth-hooks
   http:
     - route:
         - destination:
-            host: auth-hooks-service
+            host: auth-hooks
       retries:
         attempts: 3
         perTryTimeout: 2s
@@ -17,9 +17,9 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: auth-hooks-service
+  name: auth-hooks
 spec:
-  host: auth-hooks-service
+  host: auth-hooks
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
@@ -31,7 +31,7 @@ spec:
 # spec:
 #   selector:
 #     matchLabels:
-#       app: auth-hooks-service
+#       app: auth-hooks
 #   action: DENY
 #   rules:
 #     - from:

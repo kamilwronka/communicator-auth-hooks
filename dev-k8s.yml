@@ -3,35 +3,35 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   namespace: communicator-dev
-  name: auth-hooks-service
+  name: auth-hooks
   labels:
-    account: auth-hooks-service
+    account: auth-hooks
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: communicator-dev
-  name: auth-hooks-service
+  name: auth-hooks
   labels:
     purpose: dev
-    app: auth-hooks-service
+    app: auth-hooks
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-hooks-service
+      app: auth-hooks
 
   template:
     metadata:
       labels:
-        app: auth-hooks-service
+        app: auth-hooks
 
     spec:
-      serviceAccountName: auth-hooks-service
+      serviceAccountName: auth-hooks
       containers:
-        - name: auth-hooks-service
-          image: auth-hooks-service
+        - name: auth-hooks
+          image: auth-hooks
           ports:
             - containerPort: 4000
 ---
@@ -39,10 +39,10 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: communicator-dev
-  name: auth-hooks-service
+  name: auth-hooks
   labels:
-    app: auth-hooks-service
-    service: auth-hooks-service
+    app: auth-hooks
+    service: auth-hooks
   annotations:
     ingress.kubernetes.io/service-upstream: "true"
 spec:
@@ -52,13 +52,13 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: auth-hooks-service
+    app: auth-hooks
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: auth-hooks-service
+  name: auth-hooks
   namespace: communicator-dev
   annotations:
     konghq.com/plugins: communicator-dev-cors, key-auth
@@ -73,7 +73,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: auth-hooks-service
+                name: auth-hooks
                 port:
                   number: 4000
 ---
@@ -81,14 +81,14 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   namespace: communicator-dev
-  name: auth-hooks-service
+  name: auth-hooks
 spec:
   hosts:
-    - auth-hooks-service
+    - auth-hooks
   http:
     - route:
         - destination:
-            host: auth-hooks-service
+            host: auth-hooks
       retries:
         attempts: 3
         perTryTimeout: 2s
@@ -98,9 +98,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   namespace: communicator-dev
-  name: auth-hooks-service
+  name: auth-hooks
 spec:
-  host: auth-hooks-service
+  host: auth-hooks
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
@@ -113,7 +113,7 @@ spec:
 # spec:
 #   selector:
 #     matchLabels:
-#       app: auth-hooks-service
+#       app: auth-hooks
 #   action: DENY
 #   rules:
 #     - from:
@@ -121,7 +121,7 @@ spec:
 #             notNamespaces: ["communicator-dev"]
 #             # notPrincipals:
 #             #   [
-#             #     "cluster.local/ns/communicator-dev/sa/auth-hooks-service",
+#             #     "cluster.local/ns/communicator-dev/sa/auth-hooks",
 #             #   ]
 #       to:
 #         - operation:
