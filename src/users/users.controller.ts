@@ -8,11 +8,11 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
-@Controller('')
+@Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post('create')
+  @Post('')
   @UsePipes(new ValidationPipe({ transform: true }))
   createUser(@Body() createUserData: CreateUserDto) {
     return this.usersService.create(createUserData);

@@ -10,7 +10,7 @@ export class UsersService {
 
   create(createUserData: CreateUserDto): any {
     const response = this.httpService.post(
-      'http://users:4000/users/create/account',
+      'http://users:4000/account',
       createUserData,
     );
 
