@@ -19,8 +19,8 @@ RUN yarn build
 # remove development dependencies
 RUN npm prune --production
 
-# run node prune
-RUN /usr/local/bin/node-prune
+# run node prune -- not working
+# RUN /usr/local/bin/node-prune
 
 FROM node:16-alpine
 WORKDIR /usr/src/app
