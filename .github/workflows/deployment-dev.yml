@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Create kubeconfig directory
+        run: sudo mkdir -p /home/deploy
+
       # auth kubernetes cluster
       - name: Auth with kubernetes cluster
         run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > $KUBECONFIG
