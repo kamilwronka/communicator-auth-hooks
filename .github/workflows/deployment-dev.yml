@@ -7,23 +7,26 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
-  GKE_ZONE: europe-central2-b
-  DEPLOYMENT_NAME: auth-hooks
-  IMAGE: communicator_auth-hooks
+  DEPLOYMENT_NAME: auth-hooks-service
+  IMAGE: communicator_auth-hooks-service
   REPOSITORY: ${{ secrets.REPOSITORY }}
   ENVIRONMENT: dev
   NAMESPACE: communicator-dev
+  KUBECONFIG: /home/deploy/config
 
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: $ENVIRONMENT
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      # auth kubernetes cluster
+      - name: Auth with kubernetes cluster
+        run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > $KUBECONFIG
 
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
@@ -35,13 +38,6 @@ jobs:
       # helper for authentication
       - run: |-
           gcloud --quiet auth configure-docker europe-central2-docker.pkg.dev
-
-      # Get the GKE credentials so we can deploy to the cluster
-      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
-        with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GKE_SA_KEY }}
 
       # Build the Docker image
       - name: Build
