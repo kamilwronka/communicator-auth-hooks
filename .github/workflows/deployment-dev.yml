@@ -6,8 +6,8 @@ on:
       - develop
 
 env:
-  DEPLOYMENT_NAME: auth-hooks-service
-  IMAGE: communicator_auth-hooks-service
+  DEPLOYMENT_NAME: auth-hooks
+  IMAGE: communicator_auth-hooks
   REPOSITORY: ${{ secrets.REPOSITORY }}
   ENVIRONMENT: dev
   NAMESPACE: communicator-dev
