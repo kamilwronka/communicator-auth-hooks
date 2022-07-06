@@ -12,6 +12,8 @@ spec:
         app: auth-hooks
     spec:
       serviceAccountName: auth-hooks
+      imagePullSecrets:
+        - name: docker-registry
       containers:
         - name: auth-hooks
           image: communicator
