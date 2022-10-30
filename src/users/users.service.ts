@@ -1,24 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { catchError, map } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
+import { AxiosError } from 'axios';
 
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) {}
 
-  create(createUserData: CreateUserDto): any {
-    const response = this.httpService.post(
-      'http://users:4000/account',
-      createUserData,
+  async create(createUserData: CreateUserDto): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService.post('/account', createUserData).pipe(
+        catchError((error: AxiosError) => {
+          throw new BadGatewayException(error.message);
+        }),
+      ),
     );
 
-    return response.pipe(
-      catchError((e) => {
-        throw new BadRequestException(e.response.data);
-      }),
-      map((res) => res.data),
-    );
+    return data;
   }
 }

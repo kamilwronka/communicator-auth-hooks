@@ -1,28 +1,19 @@
-FROM node:16-alpine AS BUILD_IMAGE
-
-# install dependencies
-RUN apk update && apk add yarn curl bash
-
-# install node-prune (https://github.com/tj/node-prune)
-RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | bash -s -- -b /usr/local/bin
+FROM node:19-alpine AS BUILD_IMAGE
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn --frozen-lockfile
+RUN npm ci
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 # remove development dependencies
 RUN npm prune --production
 
-# run node prune -- not working
-# RUN /usr/local/bin/node-prune
-
-FROM node:16-alpine
+FROM node:19-alpine
 WORKDIR /usr/src/app
 
 COPY --from=BUILD_IMAGE /usr/src/app/dist ./dist
@@ -31,4 +22,4 @@ COPY --from=BUILD_IMAGE /usr/src/app/package.json ./
 
 EXPOSE 4000
 
-ENTRYPOINT [ "yarn", "start:prod" ]
+ENTRYPOINT [ "npm", "run", "start:prod" ]

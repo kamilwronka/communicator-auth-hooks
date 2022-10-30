@@ -1,12 +1,17 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
-import { configService } from './config/config.service';
+import { IAppConfig } from './config/types';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = configService.getPort();
+  const configService = app.get(ConfigService);
+
+  const { port } = configService.get<IAppConfig>('app', {
+    infer: true,
+  });
 
   Logger.log(`Starting application on port: ${port}`);
 
