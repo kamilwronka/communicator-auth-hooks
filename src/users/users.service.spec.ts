@@ -32,6 +32,7 @@ describe('UsersService', () => {
     it('should call users service with user data', async () => {
       const response = await service.create({
         email: 'email@email.com',
+        username: 'test',
       });
 
       expect(response).toEqual({});
@@ -46,6 +47,7 @@ describe('UsersService', () => {
       expect(
         service.create({
           email: 'email@email.com',
+          username: 'test',
         }),
       ).rejects.toThrow(BadGatewayException);
     });
