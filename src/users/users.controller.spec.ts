@@ -23,7 +23,7 @@ describe('UsersController', () => {
   describe('createUser', () => {
     it('should call create method', () => {
       controller.createUser({
-        user: { user_id: 'userid', email: 'email@email.com' },
+        email: 'email@email.com',
       });
 
       expect(mockUsersService.create).toHaveBeenCalled();
