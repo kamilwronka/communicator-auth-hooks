@@ -1,4 +1,4 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
@@ -13,7 +13,7 @@ export class UsersService {
     const { data } = await firstValueFrom(
       this.httpService.post('/account', createUserData).pipe(
         catchError((error: AxiosError) => {
-          throw new BadGatewayException(error.message);
+          throw error;
         }),
       ),
     );
