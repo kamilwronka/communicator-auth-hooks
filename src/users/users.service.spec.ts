@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
+import { BadGatewayException } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { of, throwError } from 'rxjs';
 import { UsersService } from './users.service';
@@ -50,7 +51,7 @@ describe('UsersService', () => {
             email: 'email@email.com',
           },
         }),
-      ).rejects.toThrow(AxiosError);
+      ).rejects.toThrow(BadGatewayException);
     });
   });
 });
