@@ -15,7 +15,7 @@ export class UsersService {
 
   async create(createUserData: CreateUserDto): Promise<any> {
     const { data } = await firstValueFrom(
-      this.httpService.post('/account', createUserData).pipe(
+      this.httpService.post('/internal', createUserData).pipe(
         catchError((error: AxiosError) => {
           if (error.status === 400) {
             throw new BadRequestException(error.response.data);
