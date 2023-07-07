@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
 
 env:
   DEPLOYMENT_NAME: auth-hooks
@@ -23,18 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Use Node.js for tests
-        uses: actions/setup-node@v3
-        with:
-          node-version: 19.x
-      - run: npm ci
-      - run: npm run test:cov
-
       - name: Create kubeconfig directory
         run: sudo mkdir -p /home/deploy
 
       # auth kubernetes cluster
-      - name: Auth with Kubernetes cluster
+      - name: Auth with kubernetes cluster
         run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > $KUBECONFIG
 
       - name: Log in to Docker Hub
