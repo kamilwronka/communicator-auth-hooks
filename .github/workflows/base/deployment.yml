@@ -19,17 +19,17 @@ spec:
           image: communicator
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: '128Mi'
+              cpu: '200m'
             limits:
-              memory: "256Mi"
-              cpu: "100m"
+              memory: '256Mi'
+              cpu: '200m'
           ports:
             - name: container-port
               containerPort: 4000
           env:
             - name: PORT
-              value: "4000"
+              value: '4000'
             - name: ENV
               value: dev
 
@@ -37,9 +37,11 @@ spec:
             httpGet:
               path: /healthz
               port: container-port
+            initialDelaySeconds: 60
+            periodSeconds: 30
 
           readinessProbe:
             tcpSocket:
               port: container-port
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 60
