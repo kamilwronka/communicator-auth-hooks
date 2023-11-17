@@ -5,8 +5,9 @@ metadata:
   annotations:
     konghq.com/protocols: https
     konghq.com/https-redirect-status-code: '308'
-    konghq.com/plugins: cors, key-auth
+    konghq.com/plugins: cors,key-auth
     konghq.com/strip-path: 'true'
+    konghq.com/preserve-host: 'false'
 spec:
   tls:
     - hosts:
